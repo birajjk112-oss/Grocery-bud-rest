@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+import re
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,15 +22,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-kygj$63fkzc1o_nw^l6_6x@+ck9_53csxyz@+v9wne7g2x!r=('
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY",
+    "django-insecure-kygj$63fkzc1o_nw^l6_6x@+ck9_53csxyz@+v9wne7g2x!r=(",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DJANGO_DEBUG", "true").lower() in {"1", "true", "yes", "y", "on"}
 
-ALLOWED_HOSTS = ['grocery-bud-rest.vercel.app',
-    '.vercel.app',
-    'localhost',
-    '127.0.0.1', ]
+ALLOWED_HOSTS = [
+    "grocery-bud-rest.vercel.app",
+    ".vercel.app",
+    "localhost",
+    "127.0.0.1",
+]
 
 
 # Application definition
@@ -122,7 +129,31 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# React dev servers + Vercel preview domains
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://grocery-bud-rest-6msbs5fmy-birajjk112-oss-projects.vercel.app",
+    "http://127.0.0.1:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://grocery-bud-rest.vercel.app",
+    "https://rest-apigrocery.netlify.app",
 ]
+
+# Covers https://<anything>.vercel.app (including preview deployments)
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    re.compile(r"^https://.*\\.vercel\\.app$"),
+]
+
+# Only needed if you ever use session auth / CSRF-protected endpoints from the browser.
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://grocery-bud-rest.vercel.app",
+    "https://rest-apigrocery.netlify.app",
+    "https://*.vercel.app",
+]
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
