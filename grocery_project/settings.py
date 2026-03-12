@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure-kygj$63fkzc1o_nw^l6_6x@+ck9_53csxyz@+v9wne7g2x!r=(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['grocery-bud-rest.vercel.app' , 'localhost', ]
+ALLOWED_HOSTS = ['grocery-bud-rest.vercel.app',
+    '.vercel.app',
+    'localhost',
+    '127.0.0.1', ]
 
 
 # Application definition
