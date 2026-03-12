@@ -121,4 +121,5 @@ USE_TZ = True
 STATIC_URL = 'static/'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://grocery-bud-rest-6msbs5fmy-birajjk112-oss-projects.vercel.app",
 ]
